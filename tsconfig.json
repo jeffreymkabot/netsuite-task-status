@@ -1,0 +1,34 @@
+{
+	"compilerOptions": {
+		"outDir": "./out",
+		"module": "amd",
+		"target": "es5",
+		"lib": [
+			"es5",
+			"es2015.promise",
+			"dom"
+		],
+		"declaration": true,
+		"jsx": "react",
+		"strict": true,
+		"noUnusedLocals": true,
+		"esModuleInterop": false,
+		"moduleResolution": "node",
+		"baseUrl": ".",
+		"paths": {
+			"N": [
+				"node_modules/@hitc/netsuite-types/N"
+			],
+			"N/*": [
+				"node_modules/@hitc/netsuite-types/N/*"
+			]
+		},
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx"
+	],
+	"exclude": [
+		"node_modules/**"
+	]
+}
