@@ -12,23 +12,20 @@ export interface TaskStatusProps {
 	/** Display error message after too many consecutive errors. */
 	maxConsecutiveErrors?: number
 	/**
-	 * Use this property to rename or hide the progress bar for a stage.
-	 * - Set a stage to a string to rename the progress bar for that stage.
-	 * - Explicitly set a stage to `null` to hide the bar for that stage.
-	 * - Omit a stage to use the default name for that stage.
-	 * - Omit this property altogether to show all bars with all default names.
-	 *
-	 * @example
-	 * stages: {
-	 *     reduce: 'Create orders',
-	 *     summarize: null
-	 * }
+	 * Name the progress bar for the map stage.
+	 * Use the magic string `"none"` (case insensitive) to hide the progress bar.
 	 */
-	stages?: {
-		map?: string | null
-		reduce?: string | null
-		summarize?: string | null
-	}
+	map?: string
+	/**
+	 * Name the progress bar for the reduce stage.
+	 * Use the magic string `"none"` (case insensitive) to hide the progress bar.
+	 */
+	reduce?: string
+	/**
+	 * Name the progress bar for the summarize stage.
+	 * Use the magic string `"none"` (case insensitive) to hide the progress bar.
+	 */
+	summarize?: string
 }
 
 export interface TaskStatusState {
@@ -68,6 +65,7 @@ export class TaskStatus extends React.Component<TaskStatusProps, TaskStatusState
 		} catch (exc) {
 			this.consecutiveErrors++;
 			if (this.props.maxConsecutiveErrors != null &&
+				this.props.maxConsecutiveErrors > 0 &&
 				this.consecutiveErrors >= this.props.maxConsecutiveErrors) {
 				this.setState({ error: exc });
 				return;
@@ -111,19 +109,16 @@ export class TaskStatus extends React.Component<TaskStatusProps, TaskStatusState
 		);
 	}
 	renderProcessing(titleDiv: JSX.Element, status: Status) {
-		const stages = this.props.stages;
-
-		// evaluating conditions here to improve readability
-		const hideMap = stages && stages.map === null;
-		const hideReduce = stages && stages.reduce === null;
-		const hideSummarize = stages && stages.summarize === null;
+		const hideMap = typeof this.props.map === 'string' && this.props.map.toLowerCase() === 'none';
+		const hideReduce = typeof this.props.reduce === 'string' && this.props.reduce.toLowerCase() === 'none';
+		const hideSummarize = typeof this.props.summarize === 'string' && this.props.summarize.toLowerCase() === 'none';
 
 		const bars: JSX.Element[] = [];
 		if (!hideMap) {
 			bars.push(
 				<DeterminateProgressBar
 					key="map"
-					name={stages && typeof stages.map === 'string' ? stages.map : 'Map'}
+					name={typeof this.props.map === 'string' ? this.props.map : 'Map'}
 					percent={percentComplete(status.map)}
 				/>
 			);
@@ -132,7 +127,7 @@ export class TaskStatus extends React.Component<TaskStatusProps, TaskStatusState
 			bars.push(
 				<DeterminateProgressBar
 					key="reduce"
-					name={stages && typeof stages.reduce === 'string' ? stages.reduce : 'Reduce'}
+					name={typeof this.props.reduce === 'string' ? this.props.reduce : 'Reduce'}
 					percent={percentComplete(status.reduce)}
 				/>
 			);
@@ -141,7 +136,7 @@ export class TaskStatus extends React.Component<TaskStatusProps, TaskStatusState
 			bars.push(
 				<DeterminateProgressBar
 					key="summarize"
-					name={stages && typeof stages.summarize === 'string' ? stages.summarize : 'Summarize'}
+					name={typeof this.props.summarize === 'string' ? this.props.summarize : 'Summarize'}
 					percent={percentComplete(status.summarize)}
 				/>
 			);
@@ -185,7 +180,7 @@ function DeterminateProgressBar(props: DeterminateProgressBarProps) {
 	const style = { width: `${props.percent}%` };
 	return (
 		<div className="taskstatus-pb">
-			<div className="taskstatus-pb-left">{props.name || ''}</div>
+			<div className="taskstatus-pb-left">{props.name || '&nbsp;'}</div>
 			<div className="taskstatus-pb-right">{`${props.percent}%`}</div>
 			<div className="taskstatus-pb-bar">
 				<div className="taskstatus-pb-progress" style={style} />
