@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outDir": "./out",
+		"outDir": "./dist/task-status",
 		"module": "amd",
 		"target": "es5",
 		"lib": [
@@ -8,7 +8,6 @@
 			"es2015.promise",
 			"dom"
 		],
-		"declaration": true,
 		"jsx": "react",
 		"strict": true,
 		"noUnusedLocals": true,
