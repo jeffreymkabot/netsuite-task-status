@@ -8,7 +8,17 @@ Retrieve and display the status of a NetSuite Map/Reduce task.
 1. Use the NetSuite file cabinet's Advanced Add button to upload the `task-status.zip` file from the latest github release.
 Be sure to select unzip files.
 
-2. Create and deploy a suitelet script from the `task_status_sl.js` file uploaded in step 1.
+2. Upload [react](https://unpkg.com/react@16.6.0/umd/react.production.min.js) and [react-dom](https://unpkg.com/react-dom@16.6.0/umd/react-dom.production.min.js) to the file cabinet.  Then create or edit the file `SuiteScripts/amdconfig.json` to tell NetSuite's script loader where to find react and react-dom.
+```json
+{
+	"paths": {
+		"react": "/path/to/react.production.min",
+		"react-dom": "/path/to/react-dom.production.min"
+	}
+}
+```
+
+3. Create and deploy a suitelet script using the `task_status_sl.js` file uploaded in step 1.
 
 ## Usage
 
