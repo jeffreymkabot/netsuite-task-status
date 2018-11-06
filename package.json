@@ -5,7 +5,7 @@
   "scripts": {
     "test": "tsc --noEmit",
     "build": "rm -rf dist && tsc && cp -t dist/task-status/lib src/task-status/lib/*.html",
-    "bundle": "npm run build && cd dist && zip task-status.zip -r task-status"
+    "bundle": "npm run build && cd dist && zip --recurse-paths --move task-status.zip task-status"
   },
   "author": "Jeffrey Kabot",
   "license": "MIT",
