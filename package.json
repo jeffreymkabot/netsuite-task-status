@@ -1,6 +1,6 @@
 {
   "name": "netsuite-task-status",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Retrieve and display the status of a NetSuite Map/Reduce task.",
   "scripts": {
     "test": "tsc --noEmit",
