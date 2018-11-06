@@ -22,22 +22,24 @@ import * as url from 'N/url';
  *
  * @param ctx
  * query parameters
- * - taskId: which task to check status. mandatory
- * - widget: omit to get task status as json.  pass any value to get a ui for displaying task status
- * - ifrmcntnr: pass any value to hide the navbar.  netsuite uses this parameter to make the suitelet ui suitable to be
- * embedded in an iframe.
+ * - taskid: Which task to check. mandatory
+ * - query: Pass any value to get a snapshot of the task status as json.
+ *   omit to get a UI that displays the task status.
+ * - ifrmcntnr: Pass any value to hide the NetSuite navbar.
+ *   NetSuite has some behind the scenes behavior with this parameter
+ *   to make the suitelet ui suitable to be embedded in an iframe.
  *
  */
 export function onRequest(ctx: EntryPoints.Suitelet.onRequestContext) {
 	const taskId = ctx.request.parameters.taskId || ctx.request.parameters.taskid;
-	const widget = !!ctx.request.parameters.widget;
+	const query = !!ctx.request.parameters.query;
 	const isEmbedded = !!ctx.request.parameters.ifrmcntnr;
 
 	try {
 		if (typeof taskId !== 'string' || taskId === '') {
 			throw new Error(`Invalid task id: ${taskId}`);
 		}
-		if (widget) {
+		if (!query) {
 			const form = createForm(taskId, isEmbedded);
 			ctx.response.writePage({ pageObject: form });
 			return;
@@ -71,7 +73,7 @@ function isMapReduceScriptTaskStatus(
 function snapshot(status: task.MapReduceScriptTaskStatus): Status {
 	// status.getPercentageCompleted might throw an exception for completed tasks
 	let pct = 0;
-	try { pct = status.getPercentageCompleted() } catch { }
+	try { pct = status.getPercentageCompleted(); } catch { }
 
 	return {
 		// netsuite docs say these "might be" numbers

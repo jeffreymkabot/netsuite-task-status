@@ -38,7 +38,7 @@ export function initTaskStatus(rootElementId: string, props: TaskStatusProps): P
  */
 export function statusGetter(suiteletURL: string): (taskId: string) => Promise<Status> {
 	const sep = suiteletURL.indexOf('?') >= 0 ? '&' : '?';
-	const url = (taskId: string) => suiteletURL + sep + 'taskId=' + taskId;
+	const url = (taskId: string) => suiteletURL + sep + 'taskid=' + taskId + '&query=1';
 
 	return async function(taskId) {
 		// use browser API instead of N/https

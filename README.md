@@ -31,8 +31,6 @@ var suitelet = url.resolveScript({
     deploymentId: 'customdeploy_task_status_sl',
     params: {
         taskId: taskId,
-        // request the UI widget instead of raw data
-        widget: 1,
         // SuiteAnswers 68858
         ifrmcntnr: 'T',
         // rename the stages
@@ -49,7 +47,7 @@ var statusFld = form.addField({
     type: serverWidget.FieldType.INLINEHTML
 });
 statusFld.defaultValue = '<iframe src="' + suitelet + '" style="border:0;width:100%;height:200px;"></iframe>';
-``` 
+```
 
 You can rename the progress bar for each stage using the `map`, `reduce`, and `summarize` query parameters.
 You can hide the progress bar for a stage by passing the string `"none"`.

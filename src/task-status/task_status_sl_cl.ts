@@ -1,4 +1,6 @@
 /**
+ * Client script for the Task Status suitelet.
+ *
  * @NScriptType ClientScript
  * @NApiVersion 2.x
  * @NAmdConfig /SuiteScripts/amdconfig.json
@@ -9,7 +11,7 @@ import { TaskStatusProps } from './lib/task_status';
 import { initTaskStatus, statusGetter } from './lib/task_status_client';
 
 /**
- * Acquire task id and suitelet url from the page and initialize the task status widget.
+ * Initialize the task status widget using parameters taken from the page and the url query string. *
  * @param ctx
  */
 export function pageInit(ctx: EntryPoints.Client.pageInitContext) {
