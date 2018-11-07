@@ -1,12 +1,12 @@
-/**
- * @NAmdConfig /SuiteScripts/amdconfig.json
- */
-
-import { TaskStatusProps } from './task_status';
+import { TaskStatusProps } from './task_status'; // import statements that only import type definitions are elided at runtime
 import { Status, isSuiteletResponse, isSuccessResponse } from './task_status_types';
 
 /**
  * Asynchronously require the task status widget script and initialize the task status widget.
+ *
+ * This function is just a wrapper around the `init` function exported from ./task_status.tsx.
+ * NetSuite client scripts need to use this function instead of calling importing and calling `init`
+ * directly in order to get around NetSuite's server side static analysis.
  *
  * @param rootElementId id of the dom element that will contain the task status widget
  * @param props configure the task status widget
@@ -18,16 +18,8 @@ export function initTaskStatus(rootElementId: string, props: TaskStatusProps): P
 	// statically imported (i.e. in define([...])) by the client script
 	// this would throw an error since react and react-dom use APIs like Map() that are not available on the server
 	// use a dynamic import (i.e. require([...])) instead
-	return Promise.all([
-		import('react'),
-		import('react-dom'),
-		import('./task_status')
-	]).then(imports => {
-		const [React, ReactDOM, { TaskStatus }] = imports;
-		ReactDOM.render(
-			React.createElement(TaskStatus, props),
-			document.getElementById(rootElementId)
-		);
+	return import('./task_status').then(({ init }) => {
+		init(rootElementId, props);
 	});
 }
 
