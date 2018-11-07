@@ -5,7 +5,8 @@
   "scripts": {
     "test": "tsc --noEmit",
     "build": "rm -rf dist && tsc && cp -t dist/task-status/lib src/task-status/lib/*.html",
-    "bundle": "npm run build && cd dist && zip --recurse-paths --move task-status.zip task-status"
+    "bundle": "npm run build && cd dist && zip --recurse-paths --move task-status.zip task-status",
+    "demo": "webpack-dev-server --open --config webpack.config.demo.js"
   },
   "author": "Jeffrey Kabot",
   "license": "MIT",
@@ -14,7 +15,13 @@
     "@types/node": "^10.9.0",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
-    "typescript": "^3.0.3"
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "ts-loader": "^5.3.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
     "react": "^16.5.2",
