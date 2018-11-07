@@ -1,5 +1,18 @@
 import { Status, StageStatus } from './task_status_types';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+/**
+ * Initialize and render the task status script into the DOM.
+ * @param rootElementId
+ * @param props
+ */
+export function init(rootElementId: string, props: TaskStatusProps) {
+	ReactDOM.render(
+		<TaskStatus {...props}/>,
+		document.getElementById(rootElementId)
+	);
+}
 
 /**
  * Props used to configure the status widget.
